@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Animated, Pressable, Text, View, ImageBackground, Dimensions, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 const alphabet = require('../assets/data/alphabet.json');
 const numbers = require('../assets/data/numbers.json');
 const shapes = require('../assets/data/shapes.json');
 const colors = require('../assets/data/colors.json');
 import styles from '../global';
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, SafeAreaView, Pressable } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window');
+
 // Màn hình chính
 export default function HomeScreen() {
   const [currentScreen, setCurrentScreen] = useState('home');
@@ -29,6 +31,16 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Back Button */}
+      {currentScreen !== 'home' && (<TouchableOpacity
+        onPress={() => setCurrentScreen('home')}
+        style={[
+          styles.floatingButton,
+          { bottom: null, top: 50, zIndex: 999 }, // Add bottom: 100 if tab bar is visible
+        ]}
+      >
+        <FontAwesome name="angle-left" size={26} color="#E0E0E0" />
+      </TouchableOpacity>)}
       {renderScreen()}
     </SafeAreaView>
   );
@@ -36,47 +48,119 @@ export default function HomeScreen() {
 
 // Màn hình chính với các lựa chọn học tập
 function Home({ onNavigate }) {
+  const floatAnimation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Start the floating animation
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(floatAnimation, {
+          toValue: -10, // Move up by 10 pixels
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(floatAnimation, {
+          toValue: 0, // Move back to the original position
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [floatAnimation]);
+
   return (
     <View style={styles.container}>
       <View style={styles.menuGrid}>
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
-            { backgroundColor: pressed ? '#FF4C4C' : '#ED1C24' } // Vibrant red when pressed
+            { backgroundColor: pressed ? 'rgba(255, 76, 76, 0.8)' : 'rgba(255, 76, 76, 1)' },
           ]}
           onPress={() => onNavigate('alphabet')}
         >
-          <Text style={styles.menuText}>Chữ Cái</Text>
+          <ImageBackground
+            source={require('../assets/images/alphabet-bg.jpg')}
+            style={styles.menuItemBackground}
+            imageStyle={{ opacity: 0.2 }}
+          >
+            <Animated.Text
+              style={[
+                styles.menuText,
+                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+              ]}
+            >
+              Chữ Cái
+            </Animated.Text>
+          </ImageBackground>
         </Pressable>
 
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
-            { backgroundColor: pressed ? '#A09BF0' : '#8F95D3' } // Vibrant purple when pressed
+            { backgroundColor: pressed ? 'rgba(160, 155, 240, 0.8)' : 'rgba(160, 155, 255, 1.0)' },
           ]}
           onPress={() => onNavigate('numbers')}
         >
-          <Text style={styles.menuText}>Số</Text>
+          <ImageBackground
+            source={require('../assets/images/numbers-bg.jpg')}
+            style={styles.menuItemBackground}
+            imageStyle={{ opacity: 0.2 }}
+          >
+            <Animated.Text
+              style={[
+                styles.menuText,
+                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+              ]}
+            >
+              Số
+            </Animated.Text>
+          </ImageBackground>
         </Pressable>
 
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
-            { backgroundColor: pressed ? '#7DBF8A' : '#6B8F71' } // Vibrant green when pressed
+            { backgroundColor: pressed ? 'rgba(125, 191, 138, 0.8)' : 'rgba(125, 191, 138, 1)' },
           ]}
           onPress={() => onNavigate('shapes')}
         >
-          <Text style={styles.menuText}>Hình Dạng</Text>
+          <ImageBackground
+            source={require('../assets/images/shapes-bg.jpg')}
+            style={styles.menuItemBackground}
+            imageStyle={{ opacity: 0.2 }}
+          >
+            <Animated.Text
+              style={[
+                styles.menuText,
+                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+              ]}
+            >
+              Hình Dạng
+            </Animated.Text>
+          </ImageBackground>
         </Pressable>
 
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
-            { backgroundColor: pressed ? '#F7E07D' : '#F2CD5D' } // Vibrant yellow when pressed
+            { backgroundColor: pressed ? 'rgba(255, 24, 132, 0.5)' : 'transparent' },
           ]}
           onPress={() => onNavigate('colors')}
         >
-          <Text style={styles.menuText}>Màu Sắc</Text>
+          <ImageBackground
+            source={require('../assets/images/colors-bg.jpg')}
+            style={styles.menuItemBackground}
+            imageStyle={{ opacity: 0.8 }} // Dim when unpressed, reveal when pressed
+          >
+            <Animated.Text
+              style={[
+                styles.menuText,
+                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+              ]}
+            >
+              Màu Sắc
+            </Animated.Text>
+          </ImageBackground>
         </Pressable>
       </View>
     </View>
@@ -89,13 +173,6 @@ function AlphabetScreen({ onBack }) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>← Quay lại</Text>
-        </TouchableOpacity>
-        <Text style={styles.screenTitle}>Học Chữ Cái</Text>
-      </View>
-
       {selectedLetter ? (
         <View style={styles.letterDetail}>
           <Text style={styles.bigLetter}>{selectedLetter.letter}</Text>
@@ -114,7 +191,9 @@ function AlphabetScreen({ onBack }) {
             <TouchableOpacity
               key={item.letter}
               style={styles.letterItem}
-              onPress={() => setSelectedLetter(item)}
+              onPress={() => {
+                setSelectedLetter(item);
+              }}
             >
               <Text style={styles.letterText}>{item.letter}</Text>
               <Text style={styles.wordHint}>{item.word}</Text>
@@ -132,13 +211,6 @@ function NumbersScreen({ onBack }) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>← Quay lại</Text>
-        </TouchableOpacity>
-        <Text style={styles.screenTitle}>Học Số</Text>
-      </View>
-
       {selectedNumber ? (
         <View style={styles.numberDetail}>
           <Text style={styles.bigNumber}>{selectedNumber.number}</Text>
@@ -175,13 +247,6 @@ function ShapesScreen({ onBack }) {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, { padding: 20, paddingBottom: 0 }]}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>← Quay lại</Text>
-        </TouchableOpacity>
-        <Text style={styles.screenTitle}>Học Hình Dạng</Text>
-      </View>
-
       {selectedShape ? (
         <View style={styles.shapeDetail}>
           <View style={[styles.shapeSample, { backgroundColor: selectedShape.color }]}>
@@ -217,12 +282,6 @@ function ColorsScreen({ onBack }) {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.header, { padding: 20, paddingBottom: 0 }]}>
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Text style={styles.backButtonText}>← Quay lại</Text>
-        </TouchableOpacity>
-        <Text style={styles.screenTitle}>Học Màu Sắc</Text>
-      </View>
       <ScrollView contentContainerStyle={{ flexWrap: 'wrap', flexDirection: 'row' }}>
         {colors.map((item, index) => (
           <Pressable

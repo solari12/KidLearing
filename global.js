@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.3,
       shadowRadius: 3,
+      width: 55,
    },
    floatingButtonText: {
       color: '#FFF',
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
    screen: {
       flex: 1,
       padding: 20,
+      paddingTop: 100,
    },
    header: {
       marginTop: 20,
@@ -85,18 +87,29 @@ const styles = StyleSheet.create({
       flexWrap: 'wrap', // Allow wrapping to the next row
    },
    menuItem: {
-      width: '50%', // Each item takes up half the width
-      height: '50%', // Each item takes up half the height
+      width: '50%', // Each item takes 50% of the width
+      height: '50%', // Each item takes 50% of the height
       justifyContent: 'center',
       alignItems: 'center',
-      borderWidth: 0, // Optional: Add a border for better visibility
-      borderColor: '#ccc', // Optional: Border color
-      backgroundColor: '#FFF', // Default background color
+      overflow: 'hidden',
+   },
+   menuItemBackground: {
+      width: '100%',
+      height: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      resizeMode: 'cover', // Ensure the image covers the entire item
    },
    menuText: {
-      fontSize: 22,
-      fontWeight: 'bold',
-      color: '#F0F7EE',
+      fontSize: 32,
+      color: '#F0F7EE', // Main text color
+      textAlign: 'center',
+      textShadowColor: '#000', // Black outline
+      textShadowOffset: { width: 2, height: 2 }, // Offset for the shadow
+      textShadowRadius: 2, // Blur radius for the shadow
+      fontFamily: 'Lexend', // Use a rounded font (default for Android)
+      padding: 5,
+      borderRadius: 5, // Optional: Add a slight border radius for better appearance
    },
    // Styles cho màn hình chữ cái
    alphabetGrid: {

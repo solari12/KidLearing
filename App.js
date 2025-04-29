@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome } from '@expo/vector-icons'; // Thêm icon nếu muốn
 import styles from './global';
@@ -15,7 +16,19 @@ import StudyScreen from './screens/StudyScreen';
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [isTabBarVisible, setIsTabBarVisible] = useState(true); // State to toggle tab bar visibility
+  const [fontsLoaded] = useFonts({
+    LemonadeStand: require('./assets/fonts/LemonadeStand-J0Ln.ttf'), // Replace with your font file
+    Lexend: require('./assets/fonts/Lexend-VariableFont_wght.ttf'), // Replace with your font file
+  });
+  const [isTabBarVisible, setIsTabBarVisible] = useState(false); // State to toggle tab bar visibility
+  // Show a loading indicator while the font is loading
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
   return (
     <NavigationContainer>
       <View style={{ flex: 1 }}>
