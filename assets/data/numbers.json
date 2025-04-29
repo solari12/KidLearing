@@ -1,0 +1,12 @@
+[
+  { "number": "1", "word": "Một", "example": "1 quả táo" },
+  { "number": "2", "word": "Hai", "example": "2 con mèo" },
+  { "number": "3", "word": "Ba", "example": "3 bông hoa" },
+  { "number": "4", "word": "Bốn", "example": "4 chiếc xe" },
+  { "number": "5", "word": "Năm", "example": "5 ngón tay" },
+  { "number": "6", "word": "Sáu", "example": "6 cái bánh" },
+  { "number": "7", "word": "Bảy", "example": "7 màu cầu vồng" },
+  { "number": "8", "word": "Tám", "example": "8 chú vịt" },
+  { "number": "9", "word": "Chín", "example": "9 ngôi sao" },
+  { "number": "10", "word": "Mười", "example": "10 ngón tay và chân" }
+]

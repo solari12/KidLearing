@@ -1,0 +1,8 @@
+[
+   { "name": "Tròn", "desc": "Hình tròn không có góc", "color": "#FF9AA2" },
+   { "name": "Vuông", "desc": "Hình vuông có 4 góc bằng nhau", "color": "#FFDAC1" },
+   { "name": "Tam giác", "desc": "Hình tam giác có 3 góc", "color": "#E2F0CB" },
+   { "name": "Chữ nhật", "desc": "Hình chữ nhật có 4 góc vuông", "color": "#B5EAD7" },
+   { "name": "Ngôi sao", "desc": "Hình ngôi sao có nhiều cạnh nhọn", "color": "#C7CEEA" },
+   { "name": "Oval", "desc": "Hình Oval giống quả trứng", "color": "#FF9AA2" }
+ ]
