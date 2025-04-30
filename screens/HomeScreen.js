@@ -50,6 +50,12 @@ export default function HomeScreen() {
 function Home({ onNavigate }) {
   const floatAnimation = useRef(new Animated.Value(0)).current;
 
+  // Create separate trembling animations for each button
+  const trembleAlphabet = useRef(new Animated.Value(0)).current;
+  const trembleNumbers = useRef(new Animated.Value(0)).current;
+  const trembleShapes = useRef(new Animated.Value(0)).current;
+  const trembleColors = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     // Start the floating animation
     Animated.loop(
@@ -68,15 +74,45 @@ function Home({ onNavigate }) {
     ).start();
   }, [floatAnimation]);
 
+  const startTremble = (trembleAnimation) => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(trembleAnimation, {
+          toValue: 5, // Move 5 pixels to the right
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(trembleAnimation, {
+          toValue: -5, // Move 5 pixels to the left
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(trembleAnimation, {
+          toValue: 0, // Return to the original position
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  };
+
+  const stopTremble = (trembleAnimation) => {
+    trembleAnimation.stopAnimation(); // Stop the trembling animation
+    trembleAnimation.setValue(0); // Reset the position
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.menuGrid}>
+        {/* Alphabet Button */}
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
             { backgroundColor: pressed ? 'rgba(255, 76, 76, 0.8)' : 'rgba(255, 76, 76, 1)' },
           ]}
           onPress={() => onNavigate('alphabet')}
+          onPressIn={() => startTremble(trembleAlphabet)} // Start trembling for this button
+          onPressOut={() => stopTremble(trembleAlphabet)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/alphabet-bg.jpg')}
@@ -86,7 +122,12 @@ function Home({ onNavigate }) {
             <Animated.Text
               style={[
                 styles.menuText,
-                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+                {
+                  transform: [
+                    { translateY: floatAnimation }, // Apply floating animation
+                    { translateX: trembleAlphabet }, // Apply trembling animation
+                  ],
+                },
               ]}
             >
               Chữ Cái
@@ -94,12 +135,15 @@ function Home({ onNavigate }) {
           </ImageBackground>
         </Pressable>
 
+        {/* Numbers Button */}
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
             { backgroundColor: pressed ? 'rgba(160, 155, 240, 0.8)' : 'rgba(160, 155, 255, 1.0)' },
           ]}
           onPress={() => onNavigate('numbers')}
+          onPressIn={() => startTremble(trembleNumbers)} // Start trembling for this button
+          onPressOut={() => stopTremble(trembleNumbers)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/numbers-bg.jpg')}
@@ -109,7 +153,12 @@ function Home({ onNavigate }) {
             <Animated.Text
               style={[
                 styles.menuText,
-                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+                {
+                  transform: [
+                    { translateY: floatAnimation }, // Apply floating animation
+                    { translateX: trembleNumbers }, // Apply trembling animation
+                  ],
+                },
               ]}
             >
               Số
@@ -117,12 +166,15 @@ function Home({ onNavigate }) {
           </ImageBackground>
         </Pressable>
 
+        {/* Shapes Button */}
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
             { backgroundColor: pressed ? 'rgba(125, 191, 138, 0.8)' : 'rgba(125, 191, 138, 1)' },
           ]}
           onPress={() => onNavigate('shapes')}
+          onPressIn={() => startTremble(trembleShapes)} // Start trembling for this button
+          onPressOut={() => stopTremble(trembleShapes)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/shapes-bg.jpg')}
@@ -132,7 +184,12 @@ function Home({ onNavigate }) {
             <Animated.Text
               style={[
                 styles.menuText,
-                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+                {
+                  transform: [
+                    { translateY: floatAnimation }, // Apply floating animation
+                    { translateX: trembleShapes }, // Apply trembling animation
+                  ],
+                },
               ]}
             >
               Hình Dạng
@@ -140,22 +197,30 @@ function Home({ onNavigate }) {
           </ImageBackground>
         </Pressable>
 
+        {/* Colors Button */}
         <Pressable
           style={({ pressed }) => [
             styles.menuItem,
             { backgroundColor: pressed ? 'rgba(255, 24, 132, 0.5)' : 'transparent' },
           ]}
           onPress={() => onNavigate('colors')}
+          onPressIn={() => startTremble(trembleColors)} // Start trembling for this button
+          onPressOut={() => stopTremble(trembleColors)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/colors-bg.jpg')}
             style={styles.menuItemBackground}
-            imageStyle={{ opacity: 0.8 }} // Dim when unpressed, reveal when pressed
+            imageStyle={{ opacity: 0.8 }}
           >
             <Animated.Text
               style={[
                 styles.menuText,
-                { transform: [{ translateY: floatAnimation }] }, // Apply the floating animation
+                {
+                  transform: [
+                    { translateY: floatAnimation }, // Apply floating animation
+                    { translateX: trembleColors }, // Apply trembling animation
+                  ],
+                },
               ]}
             >
               Màu Sắc
