@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
       height: '50%', // Each item takes 50% of the height
       justifyContent: 'center',
       alignItems: 'center',
-      overflow: 'hidden',
    },
    menuItemBackground: {
       width: '100%',
@@ -102,14 +101,15 @@ const styles = StyleSheet.create({
    },
    menuText: {
       fontSize: 32,
+      width: '100%',
+      fontWeight: 'bold',
       color: '#F0F7EE', // Main text color
       textAlign: 'center',
-      textShadowColor: '#000', // Black outline
-      textShadowOffset: { width: 2, height: 2 }, // Offset for the shadow
-      textShadowRadius: 2, // Blur radius for the shadow
-      fontFamily: 'Lexend', // Use a rounded font (default for Android)
+      fontFamily: 'Lexend', // Use a rounded font
       padding: 5,
-      borderRadius: 5, // Optional: Add a slight border radius for better appearance
+      textShadowColor: '#000', // Black outline
+      textShadowOffset: { width: 1, height: 1 }, // Offset for the shadow
+      textShadowRadius: 20, // Blur radius for the shadow
    },
    // Styles cho màn hình chữ cái
    alphabetGrid: {
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
       paddingBottom: 32,
    },
    letterItem: {
-      width: '23%',
+      width: '30%',
       aspectRatio: 1,
       backgroundColor: '#FFE8E8',
       borderRadius: 12,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
       color: '#333',
    },
    wordHint: {
-      fontSize: 12,
+      fontSize: 18,
       color: '#666',
    },
    letterDetail: {
@@ -175,15 +175,17 @@ const styles = StyleSheet.create({
    },
    // Styles cho màn hình số
    numbersGrid: {
+      marginTop: 100,
       flexDirection: 'row',
       flexWrap: 'wrap',
-      justifyContent: 'space-between',
+      justifyContent: 'space-around',
       paddingBottom: 32,
    },
    numberItem: {
       width: '30%',
+      height: '23%',
       aspectRatio: 1,
-      backgroundColor: '#FFF0DB',
+      backgroundColor: 'lightyellow',
       borderRadius: 12,
       justifyContent: 'center',
       alignItems: 'center',
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
    numberText: {
       fontSize: 32,
       fontWeight: 'bold',
-      color: '#FF8C42',
+      color: 'black',
    },
    numberDetail: {
       flex: 1,
@@ -215,26 +217,49 @@ const styles = StyleSheet.create({
       color: '#333',
       marginBottom: 8,
    },
-   numberExample: {
+   numberDesc: {
       fontSize: 24,
+      color: '#666',
+      marginBottom: 8,
+   },
+   numberExample: {
+      fontSize: 32,
       color: '#666',
       marginBottom: 32,
    },
    // Styles cho màn hình hình dạng
    shapesGrid: {
+      paddingTop: 130,
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
-      paddingBottom: 32,
    },
    shapeItem: {
-      width: '50%', // Each item takes up half the width
-      height: '33.33%', // Each item takes up half the height
+      width: '50%', // Match the width of letterItem
+      aspectRatio: 1, // Ensure items are square
+      paddingBottom: 32,
+      backgroundColor: '#FFF',
       justifyContent: 'center',
       alignItems: 'center',
-      borderWidth: 0, // Optional: Add a border for better visibility
-      borderColor: '#ccc', // Optional: Border color
-      backgroundColor: '#FFF', // Default background color
+      elevation: 2, // Optional: Add elevation for a consistent look
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+   },
+   emojiBackgroundContainer: {
+      position: 'absolute', // Place the container in the background
+      width: 300, // Adjust the size of the background
+      height: 300, // Adjust the size of the background
+      borderRadius: 150, // Make it circular
+      justifyContent: 'center',
+      alignItems: 'center',
+      opacity: 1, // Make the background semi-transparent
+      top: 0, // Position it at the bottom of the item
+   },
+   emojiBackground: {
+      fontSize: 200, // Magnify the emoji
+      textAlign: 'center',
    },
    shapeText: {
       fontSize: 22,
@@ -242,6 +267,7 @@ const styles = StyleSheet.create({
       color: '#333',
    },
    shapeDetail: {
+      marginTop: 100,
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',

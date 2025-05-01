@@ -4,6 +4,7 @@ const alphabet = require('../assets/data/alphabet.json');
 const numbers = require('../assets/data/numbers.json');
 const shapes = require('../assets/data/shapes.json');
 const colors = require('../assets/data/colors.json');
+import { startFloatingAnimation, startTrembleAnimation, stopAnimation, getRandomColor, getRandomBrightColor } from '../animations';
 import styles from '../global';
 import { FontAwesome } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window');
@@ -58,48 +59,8 @@ function Home({ onNavigate }) {
 
   useEffect(() => {
     // Start the floating animation
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(floatAnimation, {
-          toValue: -10, // Move up by 10 pixels
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(floatAnimation, {
-          toValue: 0, // Move back to the original position
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
+    startFloatingAnimation(floatAnimation);
   }, [floatAnimation]);
-
-  const startTremble = (trembleAnimation) => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(trembleAnimation, {
-          toValue: 5, // Move 5 pixels to the right
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(trembleAnimation, {
-          toValue: -5, // Move 5 pixels to the left
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(trembleAnimation, {
-          toValue: 0, // Return to the original position
-          duration: 200,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  };
-
-  const stopTremble = (trembleAnimation) => {
-    trembleAnimation.stopAnimation(); // Stop the trembling animation
-    trembleAnimation.setValue(0); // Reset the position
-  };
 
   return (
     <View style={styles.container}>
@@ -111,8 +72,8 @@ function Home({ onNavigate }) {
             { backgroundColor: pressed ? 'rgba(255, 76, 76, 0.8)' : 'rgba(255, 76, 76, 1)' },
           ]}
           onPress={() => onNavigate('alphabet')}
-          onPressIn={() => startTremble(trembleAlphabet)} // Start trembling for this button
-          onPressOut={() => stopTremble(trembleAlphabet)} // Stop trembling for this button
+          onPressIn={() => startTrembleAnimation(trembleAlphabet)} // Start trembling for this button
+          onPressOut={() => stopAnimation(trembleAlphabet)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/alphabet-bg.jpg')}
@@ -142,8 +103,8 @@ function Home({ onNavigate }) {
             { backgroundColor: pressed ? 'rgba(160, 155, 240, 0.8)' : 'rgba(160, 155, 255, 1.0)' },
           ]}
           onPress={() => onNavigate('numbers')}
-          onPressIn={() => startTremble(trembleNumbers)} // Start trembling for this button
-          onPressOut={() => stopTremble(trembleNumbers)} // Stop trembling for this button
+          onPressIn={() => startTrembleAnimation(trembleNumbers)} // Start trembling for this button
+          onPressOut={() => stopAnimation(trembleNumbers)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/numbers-bg.jpg')}
@@ -173,8 +134,8 @@ function Home({ onNavigate }) {
             { backgroundColor: pressed ? 'rgba(125, 191, 138, 0.8)' : 'rgba(125, 191, 138, 1)' },
           ]}
           onPress={() => onNavigate('shapes')}
-          onPressIn={() => startTremble(trembleShapes)} // Start trembling for this button
-          onPressOut={() => stopTremble(trembleShapes)} // Stop trembling for this button
+          onPressIn={() => startTrembleAnimation(trembleShapes)} // Start trembling for this button
+          onPressOut={() => stopAnimation(trembleShapes)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/shapes-bg.jpg')}
@@ -204,8 +165,8 @@ function Home({ onNavigate }) {
             { backgroundColor: pressed ? 'rgba(255, 24, 132, 0.5)' : 'transparent' },
           ]}
           onPress={() => onNavigate('colors')}
-          onPressIn={() => startTremble(trembleColors)} // Start trembling for this button
-          onPressOut={() => stopTremble(trembleColors)} // Stop trembling for this button
+          onPressIn={() => startTrembleAnimation(trembleColors)} // Start trembling for this button
+          onPressOut={() => stopAnimation(trembleColors)} // Stop trembling for this button
         >
           <ImageBackground
             source={require('../assets/images/colors-bg.jpg')}
@@ -235,29 +196,51 @@ function Home({ onNavigate }) {
 // Màn hình học bảng chữ cái
 function AlphabetScreen({ onBack }) {
   const [selectedLetter, setSelectedLetter] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [dynamicAlphabet, setDynamicAlphabet] = useState([]);
+  useEffect(() => {
+    const updatedAlphabet = alphabet.map((item) => ({
+      ...item,
+      color: getRandomBrightColor(), // Assign a random bright color
+    }));
+    setDynamicAlphabet(updatedAlphabet);
+  }, []);
 
   return (
     <View style={styles.screen}>
       {selectedLetter ? (
         <View style={styles.letterDetail}>
-          <Text style={styles.bigLetter}>{selectedLetter.letter}</Text>
+          <Text style={[
+            styles.bigLetter,
+            { color: selectedColor }
+          ]}>{selectedLetter.letter}</Text>
           <Text style={styles.letterWord}>{selectedLetter.word}</Text>
           <Text style={styles.letterPronoun}>{selectedLetter.pronoun}</Text>
           <TouchableOpacity
-            style={styles.backToListButton}
+            style={[
+              styles.backToListButton,
+              { backgroundColor: selectedColor }
+            ]}
             onPress={() => setSelectedLetter(null)}
           >
             <Text style={styles.backToListText}>Xem tất cả chữ cái</Text>
           </TouchableOpacity>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.alphabetGrid}>
-          {alphabet.map((item) => (
+        <ScrollView
+          contentContainerStyle={styles.alphabetGrid}
+          showsVerticalScrollIndicator={false}
+        >
+          {dynamicAlphabet.map((item) => (
             <TouchableOpacity
               key={item.letter}
-              style={styles.letterItem}
+              style={[
+                styles.letterItem,
+                { backgroundColor: item.color } // Random color for each letter
+              ]}
               onPress={() => {
                 setSelectedLetter(item);
+                setSelectedColor(item.color)
               }}
             >
               <Text style={styles.letterText}>{item.letter}</Text>
@@ -280,6 +263,7 @@ function NumbersScreen({ onBack }) {
         <View style={styles.numberDetail}>
           <Text style={styles.bigNumber}>{selectedNumber.number}</Text>
           <Text style={styles.numberWord}>{selectedNumber.word}</Text>
+          <Text style={styles.numberDesc}>{selectedNumber.desc}</Text>
           <Text style={styles.numberExample}>{selectedNumber.example}</Text>
           <TouchableOpacity
             style={styles.backToListButton}
@@ -310,23 +294,46 @@ function NumbersScreen({ onBack }) {
 function ShapesScreen({ onBack }) {
   const [selectedShape, setSelectedShape] = useState(null);
 
-  return (
-    <View style={styles.container}>
-      {selectedShape ? (
-        <View style={styles.shapeDetail}>
-          <View style={[styles.shapeSample, { backgroundColor: selectedShape.color }]}>
-            <Text style={styles.shapeText}>{selectedShape.name}</Text>
-          </View>
-          <Text style={styles.shapeDesc}>{selectedShape.desc}</Text>
-          <TouchableOpacity
-            style={styles.backToListButton}
-            onPress={() => setSelectedShape(null)}
-          >
-            <Text style={styles.backToListText}>Xem tất cả hình dạng</Text>
-          </TouchableOpacity>
+  const renderShape = () => {
+    if (!selectedShape) return null;
+
+    return (
+      <View style={styles.shapeDetail}>
+        {/* Emoji as Background */}
+        <View
+          style={[
+            styles.emojiBackgroundContainer,
+          ]}
+        >
+          <Text style={styles.emojiBackground}>{selectedShape.example}</Text>
         </View>
+
+        {/* Overlay Content */}
+        <Text style={styles.shapeText}>{selectedShape.name}</Text>
+        <Text style={styles.shapeDesc}>{selectedShape.desc}</Text>
+        <TouchableOpacity
+          style={styles.backToListButton}
+          onPress={() => setSelectedShape(null)}
+        >
+          <Text style={styles.backToListText}>Xem tất cả hình dạng</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+  return (
+    <ImageBackground
+      source={require('../assets/images/shapes-bg.jpg')} 
+      style={styles.container} 
+      imageStyle={{ opacity: 0.2 }} 
+    >
+      {selectedShape ? (
+        renderShape()
       ) : (
-        <ScrollView contentContainerStyle={styles.menuGrid}>
+        <ScrollView
+          contentContainerStyle={styles.shapesGrid}
+          showsVerticalScrollIndicator={false}
+        >
           {shapes.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -334,11 +341,12 @@ function ShapesScreen({ onBack }) {
               onPress={() => setSelectedShape(item)}
             >
               <Text style={styles.menuText}>{item.name}</Text>
+              <Text style={styles.menuText}>{item.example}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
       )}
-    </View>
+    </ImageBackground>
   );
 }
 

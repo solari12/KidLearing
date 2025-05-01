@@ -1,12 +1,12 @@
 [
-  { "number": "1", "word": "Một", "example": "1 quả táo" },
-  { "number": "2", "word": "Hai", "example": "2 con mèo" },
-  { "number": "3", "word": "Ba", "example": "3 bông hoa" },
-  { "number": "4", "word": "Bốn", "example": "4 chiếc xe" },
-  { "number": "5", "word": "Năm", "example": "5 ngón tay" },
-  { "number": "6", "word": "Sáu", "example": "6 cái bánh" },
-  { "number": "7", "word": "Bảy", "example": "7 màu cầu vồng" },
-  { "number": "8", "word": "Tám", "example": "8 chú vịt" },
-  { "number": "9", "word": "Chín", "example": "9 ngôi sao" },
-  { "number": "10", "word": "Mười", "example": "10 ngón tay và chân" }
+  { "number": "1", "word": "Một", "desc": "1 quả táo", "example": "🍎" },
+  { "number": "2", "word": "Hai", "desc": "2 con mèo", "example": "🐱🐱" },
+  { "number": "3", "word": "Ba", "desc": "3 bông hoa", "example": "🌸🌸🌸" },
+  { "number": "4", "word": "Bốn", "desc": "4 chiếc xe", "example": "🚗🚗🚗🚗" },
+  { "number": "5", "word": "Năm", "desc": "5 ngón tay", "example": "✋✋✋✋✋" },
+  { "number": "6", "word": "Sáu", "desc": "6 cái bánh", "example": "🍩🍩🍩🍩🍩🍩" },
+  { "number": "7", "word": "Bảy", "desc": "7 màu cầu vồng", "example": "🌈🌈🌈🌈🌈🌈🌈" },
+  { "number": "8", "word": "Tám", "desc": "8 chú vịt", "example": "🦆🦆🦆🦆🦆🦆🦆🦆" },
+  { "number": "9", "word": "Chín", "desc": "9 ngôi sao", "example": "⭐⭐⭐⭐⭐⭐⭐⭐⭐" },
+  { "number": "10", "word": "Mười", "desc": "10 ngón tay", "example": "✋✋" }
 ]

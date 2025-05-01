@@ -1,8 +1,14 @@
 [
-   { "name": "Tròn", "desc": "Hình tròn không có góc", "color": "#FF9AA2" },
-   { "name": "Vuông", "desc": "Hình vuông có 4 góc bằng nhau", "color": "#FFDAC1" },
-   { "name": "Tam giác", "desc": "Hình tam giác có 3 góc", "color": "#E2F0CB" },
-   { "name": "Chữ nhật", "desc": "Hình chữ nhật có 4 góc vuông", "color": "#B5EAD7" },
-   { "name": "Ngôi sao", "desc": "Hình ngôi sao có nhiều cạnh nhọn", "color": "#C7CEEA" },
-   { "name": "Oval", "desc": "Hình Oval giống quả trứng", "color": "#FF9AA2" }
- ]
+  { "name": "Tròn", "desc": "Hình tròn không có góc", "color": "#FF6F61", "example": "⚪" },
+  { "name": "Hình thoi", "desc": "Hình thoi có 4 góc nhọn", "color": "#FFD700", "example": "♦" },
+  { "name": "Vuông", "desc": "Hình vuông có 4 góc bằng nhau", "color": "#4CAF50", "example": "⬛" },
+  { "name": "Tam giác", "desc": "Hình tam giác có 3 góc", "color": "#2196F3", "example": "🔺" },
+  { "name": "Chữ nhật", "desc": "Hình chữ nhật có 4 góc vuông", "color": "#FF9800", "example": "▬" },
+  { "name": "Ngôi sao", "desc": "Hình ngôi sao có nhiều cạnh nhọn", "color": "#9C27B0", "example": "⭐" },
+  { "name": "Oval", "desc": "Hình Oval giống quả trứng", "color": "#00BCD4", "example": "⭕" },
+  { "name": "Hình lục giác", "desc": "Hình lục giác có 6 cạnh", "color": "#8BC34A", "example": "⬡" },
+  { "name": "Hình bát giác", "desc": "Hình bát giác có 8 cạnh", "color": "#FF5722", "example": "🛑" },
+  { "name": "Hình thang", "desc": "Hình thang có 4 cạnh không bằng nhau", "color": "#673AB7", "example": "⏢" },
+  { "name": "Hình trụ", "desc": "Hình trụ giống như cái cốc", "color": "#3F51B5", "example": "🛢️" },
+  { "name": "Hình cầu", "desc": "Hình cầu giống như quả bóng", "color": "#E91E63", "example": "⚽" }
+]
