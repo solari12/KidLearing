@@ -302,6 +302,70 @@ const styles = StyleSheet.create({
       fontSize: 22,
       fontWeight: 'bold',
    },
+   // Styles cho trò chơi
+   quizContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+   },
+   questionText: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 32,
+      color: '#333',
+   },
+   optionsContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      marginBottom: 32,
+   },
+   optionButton: {
+      backgroundColor: '#FFF',
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 12,
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.1,
+      shadowRadius: 2,
+   },
+   optionText: {
+      fontSize: 18,
+      color: '#333',
+      textAlign: 'center',
+   },
+   progressText: {
+      fontSize: 16,
+      color: '#666',
+      textAlign: 'center',
+   },
+   resultContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+   },
+   resultText: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 32,
+      color: '#333',
+   },
+   resetButton: {
+      marginTop: 32,
+      backgroundColor: '#007AFF',
+      paddingHorizontal: 32,
+      paddingVertical: 16,
+      borderRadius: 24,
+   },
+   resetButtonText: {
+      color: '#FFF',
+      fontSize: 18,
+      fontWeight: '600',
+      textAlign: 'center',
+   },
 });
 
 export default styles;

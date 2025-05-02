@@ -12,6 +12,7 @@ import HomeScreen from './screens/HomeScreen';
 import GameScreen from './screens/GameScreen';
 import GalleryScreen from './screens/GalleryScreen';
 import StudyScreen from './screens/StudyScreen';
+import HandwritingGameScreen from './screens/HandwritingGameScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -64,8 +65,8 @@ export default function App() {
             }}
           />
           <Tab.Screen
-            name="Thư viện"
-            component={GalleryScreen}
+            name="Tập viết"
+            component={HandwritingGameScreen}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <FontAwesome name="photo" size={size} color={color} />
@@ -77,7 +78,7 @@ export default function App() {
             component={StudyScreen}
             options={{
               tabBarIcon: ({ color, size }) => (
-                <FontAwesome name="cogs" size={size} color={color} />
+                <FontAwesome name="cogs" size={size} color="#B0B0B0"  />
               ),
             }}
           />
