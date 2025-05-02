@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, SafeAreaView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { Animated, StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, SafeAreaView, Pressable, ImageBackground } from 'react-native';
 import { Audio } from 'expo-av';
 import { FontAwesome } from '@expo/vector-icons'; // Thêm icon nếu muốn
 import styles from '../global'; // Import styles từ file global.js
 import colorsData from '../assets/data/colors.json'; // Import colors.json
+import { startFloatingAnimation, startTrembleAnimation, stopAnimation, getRandomColor, getRandomBrightColor } from '../animations';
 // Màn hình chính
 export default function GameScreen() {
   const [currentScreen, setCurrentScreen] = useState('home');
@@ -40,22 +41,79 @@ export default function GameScreen() {
 
 // Màn hình chính với các lựa chọn học tập
 function Home({ onNavigate }) {
+  const floatAnimation = useRef(new Animated.Value(0)).current;
+
+  // Create separate trembling animations for each button
+  const trembleQuiz = useRef(new Animated.Value(0)).current;
+  const trembleColors = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Start the floating animation
+    startFloatingAnimation(floatAnimation);
+  }, [floatAnimation]);
+
   return (
     <View style={styles.container}>
       <View style={styles.menuGrid}>
-        <TouchableOpacity
-          style={[styles.menuItem, { backgroundColor: '#C7CEEA', width: '100%' }]}
+        <Pressable
+          style={({ pressed }) => [
+            styles.menuItem,
+            { backgroundColor: pressed ? 'rgba(255, 24, 132, 0.5)' : 'transparent', width: '100%' },
+          ]}
           onPress={() => onNavigate('quiz')}
+          onPressIn={() => startTrembleAnimation(trembleQuiz)} // Start trembling for this button
+          onPressOut={() => stopAnimation(trembleQuiz)} // Stop trembling for this button
         >
-          <Text style={styles.menuText}>Kiến thức</Text>
-        </TouchableOpacity>
+          <ImageBackground
+            source={require('../assets/images/knowledge-bg.jpg')}
+            style={styles.menuItemBackground}
+            imageStyle={{ opacity: 0.8 }}
+          >
+            <Animated.Text
+              style={[
+                styles.menuText,
+                {
+                  transform: [
+                    { translateY: floatAnimation }, // Apply floating animation
+                    { translateX: trembleQuiz }, // Apply trembling animation
+                  ],
+                },
+              ]}
+            >
+              Kiến Thức
+            </Animated.Text>
+          </ImageBackground>
+        </Pressable>
 
-        <TouchableOpacity
-          style={[styles.menuItem, { backgroundColor: '#FFDAC1', width: '100%' }]}
+        <Pressable
+          style={({ pressed }) => [
+            styles.menuItem,
+            { backgroundColor: pressed ? 'rgba(255, 24, 132, 0.5)' : 'transparent', width: '100%' },
+          ]}
           onPress={() => onNavigate('colorGame')}
+          onPressIn={() => startTrembleAnimation(trembleColors)} // Start trembling for this button
+          onPressOut={() => stopAnimation(trembleColors)} // Stop trembling for this button
         >
-          <Text style={styles.menuText}>Học màu</Text>
-        </TouchableOpacity>
+          <ImageBackground
+            source={require('../assets/images/colors-bg.jpg')}
+            style={styles.menuItemBackground}
+            imageStyle={{ opacity: 0.8 }}
+          >
+            <Animated.Text
+              style={[
+                styles.menuText,
+                {
+                  transform: [
+                    { translateY: floatAnimation }, // Apply floating animation
+                    { translateX: trembleColors }, // Apply trembling animation
+                  ],
+                },
+              ]}
+            >
+              Màu Sắc
+            </Animated.Text>
+          </ImageBackground>
+        </Pressable>
       </View>
     </View>
   );
@@ -131,33 +189,38 @@ function QuizScreen({ onBack }) {
   };
 
   return (
-    <View style={styles.screen}>
-      {showResult ? (
-        <View style={styles.resultContainer}>
-          <Text style={styles.resultText}>Bạn đã trả lời đúng {score}/{questions.length} câu hỏi!</Text>
-          <TouchableOpacity style={styles.resetButton} onPress={resetQuiz}>
-            <Text style={styles.resetButtonText}>Chơi lại</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={styles.quizContainer}>
-          <Text style={styles.questionText}>{questions[currentQuestion].question}</Text>
-          <View style={styles.optionsContainer}>
-            {questions[currentQuestion].options.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.optionButton, { backgroundColor: getOptionColor(index) }]}
-                onPress={() => handleAnswer(option)}
-              >
-                <Text style={styles.optionText}>{option}</Text>
-              </TouchableOpacity>
-            ))}
-
+    <ImageBackground
+      source={require('../assets/images/knowledge-bg.jpg')}
+      style={styles.menuItemBackground}
+    >
+      <View style={styles.screen}>
+        {showResult ? (
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultText}>Bạn đã trả lời đúng {score}/{questions.length} câu hỏi!</Text>
+            <TouchableOpacity style={styles.resetButton} onPress={resetQuiz}>
+              <Text style={styles.resetButtonText}>Chơi lại</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.progressText}>Câu hỏi {currentQuestion + 1}/{questions.length}</Text>
-        </View>
-      )}
-    </View>
+        ) : (
+          <View style={styles.quizContainer}>
+            <Text style={styles.questionText}>{questions[currentQuestion].question}</Text>
+            <View style={styles.optionsContainer}>
+              {questions[currentQuestion].options.map((option, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={[styles.optionButton, { backgroundColor: getOptionColor(index) }]}
+                  onPress={() => handleAnswer(option)}
+                >
+                  <Text style={styles.optionText}>{option}</Text>
+                </TouchableOpacity>
+              ))}
+
+            </View>
+            <Text style={styles.progressText}>Câu hỏi {currentQuestion + 1}/{questions.length}</Text>
+          </View>
+        )}
+      </View>
+    </ImageBackground>
   );
 }
 function ColorGameScreen({ onBack }) {
@@ -175,7 +238,7 @@ function ColorGameScreen({ onBack }) {
       .slice(0, 4); // Take 4 random colors
     if (!shuffledColors.some((color) => color.name === randomColor.name)) {
       shuffledColors.push(randomColor); // Ensure the target color is included
-    } 
+    }
     setDisplayedColors(shuffledColors.sort(() => Math.random() - 0.5)); // Shuffle again for randomness
     setMessage('');
   };
@@ -198,23 +261,29 @@ function ColorGameScreen({ onBack }) {
   };
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.optionsContainer}>
-        <Text style={styles.questionText}>Hãy chọn màu: {targetColor}</Text>
-        {displayedColors.map((color, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[styles.optionButton, { backgroundColor: color.hex }]}
-            onPress={() => handleColorPress(color.name)}
-          >
-            <Text style={[styles.optionText, { color: getTextColor(color.name) }]}/>
+    <ImageBackground
+      source={require('../assets/images/colors-bg.jpg')}
+      style={styles.menuItemBackground}
+      imageStyle={{ opacity: 0.8 }}
+    >
+      <View style={styles.screen}>
+        <View style={styles.optionsContainer}>
+          <Text style={styles.questionText}>Hãy chọn màu: {targetColor}</Text>
+          {displayedColors.map((color, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.optionButton, { backgroundColor: color.hex }]}
+              onPress={() => handleColorPress(color.name)}
+            >
+              <Text style={[styles.optionText, { color: getTextColor(color.name) }]} />
+            </TouchableOpacity>
+          ))}
+          {message !== '' && <Text style={styles.progressText}>{message}</Text>}
+          <TouchableOpacity style={styles.resetButton} onPress={getRandomColor}>
+            <Text style={styles.resetButtonText}>Màu mới</Text>
           </TouchableOpacity>
-        ))}
-        {message !== '' && <Text style={styles.progressText}>{message}</Text>}
-        <TouchableOpacity style={styles.resetButton} onPress={getRandomColor}>
-          <Text style={styles.resetButtonText}>Màu mới</Text>
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 }

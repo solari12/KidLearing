@@ -211,21 +211,33 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       color: '#FF8C42',
       marginBottom: 16,
+      textShadowColor: '#000', // Black shadow color
+      textShadowOffset: { width: 0, height: 0 }, // No offset
+      textShadowRadius: 10, // Very blurry shadow
    },
    numberWord: {
       fontSize: 32,
       color: '#333',
       marginBottom: 8,
+      textShadowColor: '#000', // Black shadow color
+      textShadowOffset: { width: 0, height: 0 }, // No offset
+      textShadowRadius: 2, // Very blurry shadow
    },
    numberDesc: {
       fontSize: 24,
       color: '#666',
       marginBottom: 8,
+      textShadowColor: '#000', // Black shadow color
+      textShadowOffset: { width: 0, height: 0 }, // No offset
+      textShadowRadius: 2, // Very blurry shadow
    },
    numberExample: {
       fontSize: 32,
       color: '#666',
       marginBottom: 32,
+      textShadowColor: '#000', // Black shadow color
+      textShadowOffset: { width: 0, height: 0 }, // No offset
+      textShadowRadius: 10, // Very blurry shadow
    },
    // Styles cho màn hình hình dạng
    shapesGrid: {
@@ -237,7 +249,6 @@ const styles = StyleSheet.create({
    shapeItem: {
       width: '50%', // Match the width of letterItem
       aspectRatio: 1, // Ensure items are square
-      paddingBottom: 32,
       backgroundColor: '#FFF',
       justifyContent: 'center',
       alignItems: 'center',
@@ -311,9 +322,12 @@ const styles = StyleSheet.create({
    questionText: {
       fontSize: 24,
       fontWeight: 'bold',
-      textAlign: 'center',
       marginBottom: 32,
-      color: '#333',
+      color: '#FFF', // White text color
+      textAlign: 'center',
+      textShadowColor: '#000', // Black shadow color
+      textShadowOffset: { width: 0, height: 0 }, // No offset
+      textShadowRadius: 10, // Very blurry shadow
    },
    optionsContainer: {
       flex: 1,
@@ -338,8 +352,11 @@ const styles = StyleSheet.create({
    },
    progressText: {
       fontSize: 16,
-      color: '#666',
+      color: '#FFF', // White text color
       textAlign: 'center',
+      textShadowColor: '#000', // Black shadow color
+      textShadowOffset: { width: 0, height: 0 }, // No offset
+      textShadowRadius: 10, // Very blurry shadow
    },
    resultContainer: {
       flex: 1,

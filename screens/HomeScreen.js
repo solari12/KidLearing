@@ -207,49 +207,55 @@ function AlphabetScreen({ onBack }) {
   }, []);
 
   return (
-    <View style={styles.screen}>
-      {selectedLetter ? (
-        <View style={styles.letterDetail}>
-          <Text style={[
-            styles.bigLetter,
-            { color: selectedColor }
-          ]}>{selectedLetter.letter}</Text>
-          <Text style={styles.letterWord}>{selectedLetter.word}</Text>
-          <Text style={styles.letterPronoun}>{selectedLetter.pronoun}</Text>
-          <TouchableOpacity
-            style={[
-              styles.backToListButton,
-              { backgroundColor: selectedColor }
-            ]}
-            onPress={() => setSelectedLetter(null)}
-          >
-            <Text style={styles.backToListText}>Xem tất cả chữ cái</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <ScrollView
-          contentContainerStyle={styles.alphabetGrid}
-          showsVerticalScrollIndicator={false}
-        >
-          {dynamicAlphabet.map((item) => (
+    <ImageBackground
+      source={require('../assets/images/alphabet-bg.jpg')}
+      style={styles.container}
+      imageStyle={{ opacity: 0.2 }}
+    >
+      <View style={styles.screen}>
+        {selectedLetter ? (
+          <View style={styles.letterDetail}>
+            <Text style={[
+              styles.bigLetter,
+              { color: selectedColor }
+            ]}>{selectedLetter.letter}</Text>
+            <Text style={styles.letterWord}>{selectedLetter.word}</Text>
+            <Text style={styles.letterPronoun}>{selectedLetter.pronoun}</Text>
             <TouchableOpacity
-              key={item.letter}
               style={[
-                styles.letterItem,
-                { backgroundColor: item.color } // Random color for each letter
+                styles.backToListButton,
+                { backgroundColor: selectedColor }
               ]}
-              onPress={() => {
-                setSelectedLetter(item);
-                setSelectedColor(item.color)
-              }}
+              onPress={() => setSelectedLetter(null)}
             >
-              <Text style={styles.letterText}>{item.letter}</Text>
-              <Text style={styles.wordHint}>{item.word}</Text>
+              <Text style={styles.backToListText}>Xem tất cả chữ cái</Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
+          </View>
+        ) : (
+          <ScrollView
+            contentContainerStyle={styles.alphabetGrid}
+            showsVerticalScrollIndicator={false}
+          >
+            {dynamicAlphabet.map((item) => (
+              <TouchableOpacity
+                key={item.letter}
+                style={[
+                  styles.letterItem,
+                  { backgroundColor: item.color } // Random color for each letter
+                ]}
+                onPress={() => {
+                  setSelectedLetter(item);
+                  setSelectedColor(item.color)
+                }}
+              >
+                <Text style={styles.letterText}>{item.letter}</Text>
+                <Text style={styles.wordHint}>{item.word}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+    </ImageBackground>
   );
 }
 
@@ -258,35 +264,41 @@ function NumbersScreen({ onBack }) {
   const [selectedNumber, setSelectedNumber] = useState(null);
 
   return (
-    <View style={styles.screen}>
-      {selectedNumber ? (
-        <View style={styles.numberDetail}>
-          <Text style={styles.bigNumber}>{selectedNumber.number}</Text>
-          <Text style={styles.numberWord}>{selectedNumber.word}</Text>
-          <Text style={styles.numberDesc}>{selectedNumber.desc}</Text>
-          <Text style={styles.numberExample}>{selectedNumber.example}</Text>
-          <TouchableOpacity
-            style={styles.backToListButton}
-            onPress={() => setSelectedNumber(null)}
-          >
-            <Text style={styles.backToListText}>Xem tất cả số</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <ScrollView contentContainerStyle={styles.numbersGrid}>
-          {numbers.map((item) => (
+    <ImageBackground
+      source={require('../assets/images/numbers-bg.jpg')}
+      style={styles.container}
+      imageStyle={{ opacity: 0.1 }}
+    >
+      <View style={styles.screen}>
+        {selectedNumber ? (
+          <View style={styles.numberDetail}>
+            <Text style={styles.bigNumber}>{selectedNumber.number}</Text>
+            <Text style={styles.numberWord}>{selectedNumber.word}</Text>
+            <Text style={styles.numberDesc}>{selectedNumber.desc}</Text>
+            <Text style={styles.numberExample}>{selectedNumber.example}</Text>
             <TouchableOpacity
-              key={item.number}
-              style={styles.numberItem}
-              onPress={() => setSelectedNumber(item)}
+              style={styles.backToListButton}
+              onPress={() => setSelectedNumber(null)}
             >
-              <Text style={styles.numberText}>{item.number}</Text>
-              <Text style={styles.wordHint}>{item.word}</Text>
+              <Text style={styles.backToListText}>Xem tất cả số</Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
+          </View>
+        ) : (
+          <ScrollView contentContainerStyle={styles.numbersGrid}>
+            {numbers.map((item) => (
+              <TouchableOpacity
+                key={item.number}
+                style={styles.numberItem}
+                onPress={() => setSelectedNumber(item)}
+              >
+                <Text style={styles.numberText}>{item.number}</Text>
+                <Text style={styles.wordHint}>{item.word}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+    </ImageBackground>
   );
 }
 
@@ -298,34 +310,40 @@ function ShapesScreen({ onBack }) {
     if (!selectedShape) return null;
 
     return (
-      <View style={styles.shapeDetail}>
-        {/* Emoji as Background */}
-        <View
-          style={[
-            styles.emojiBackgroundContainer,
-          ]}
-        >
-          <Text style={styles.emojiBackground}>{selectedShape.example}</Text>
-        </View>
+      <ImageBackground
+        source={require('../assets/images/shapes-bg.jpg')}
+        style={styles.container}
+        imageStyle={{ opacity: 0.2 }}
+      >
+        <View style={styles.shapeDetail}>
+          {/* Emoji as Background */}
+          <View
+            style={[
+              styles.emojiBackgroundContainer,
+            ]}
+          >
+            <Text style={styles.emojiBackground}>{selectedShape.example}</Text>
+          </View>
 
-        {/* Overlay Content */}
-        <Text style={styles.shapeText}>{selectedShape.name}</Text>
-        <Text style={styles.shapeDesc}>{selectedShape.desc}</Text>
-        <TouchableOpacity
-          style={styles.backToListButton}
-          onPress={() => setSelectedShape(null)}
-        >
-          <Text style={styles.backToListText}>Xem tất cả hình dạng</Text>
-        </TouchableOpacity>
-      </View>
+          {/* Overlay Content */}
+          <Text style={styles.shapeText}>{selectedShape.name}</Text>
+          <Text style={styles.shapeDesc}>{selectedShape.desc}</Text>
+          <TouchableOpacity
+            style={styles.backToListButton}
+            onPress={() => setSelectedShape(null)}
+          >
+            <Text style={styles.backToListText}>Xem tất cả hình dạng</Text>
+          </TouchableOpacity>
+        </View>
+      </ImageBackground>
     );
   };
 
   return (
     <ImageBackground
-      source={require('../assets/images/shapes-bg.jpg')} 
-      style={styles.container} 
-      imageStyle={{ opacity: 0.2 }} 
+      source={require('../assets/images/shapes-bg.jpg')}
+      style={styles.container}
+      imageStyle={{ opacity: 0.2 }}
     >
       {selectedShape ? (
         renderShape()
@@ -337,7 +355,7 @@ function ShapesScreen({ onBack }) {
           {shapes.map((item, index) => (
             <TouchableOpacity
               key={index}
-              style={[styles.shapeItem, { backgroundColor: item.color }]}
+              style={[styles.shapeItem, { backgroundColor: item.color, paddingBottom: 32 }]}
               onPress={() => setSelectedShape(item)}
             >
               <Text style={styles.menuText}>{item.name}</Text>
@@ -354,18 +372,23 @@ function ShapesScreen({ onBack }) {
 function ColorsScreen({ onBack }) {
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{ flexWrap: 'wrap', flexDirection: 'row' }}>
+    <ImageBackground
+      source={require('../assets/images/colors-bg.jpg')}
+      style={styles.container}
+      imageStyle={{ opacity: 0.8 }}
+    >
+      <ScrollView contentContainerStyle={[styles.shapesGrid, { flexWrap: 'wrap', flexDirection: 'row', paddingBottom: 150 }]} >
         {colors.map((item, index) => (
           <Pressable
             key={index}
             style={({ pressed }) => [
+              styles.shapeItem,
               {
                 width: width * 0.5, // 50% of the viewport width
                 height: height * 0.25, // 25% of the viewport height
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: pressed ? '#55AA55' : item.hex,
+                backgroundColor: pressed ? '#CCC' : item.hex,
               },
             ]}
           >
@@ -375,6 +398,6 @@ function ColorsScreen({ onBack }) {
           </Pressable>
         ))}
       </ScrollView>
-    </View>
+    </ImageBackground>
   );
 }

@@ -1,12 +1,12 @@
 [
    { "name": "Đỏ", "hex": "#FF0000" },
-   { "name": "Xanh lá", "hex": "#00FF00", "textColor": "#000000" },
+   { "name": "Xanh lá", "hex": "#00FF00" },
    { "name": "Xanh dương", "hex": "#0000FF" },
-   { "name": "Vàng", "hex": "#FFFF00", "textColor": "#000000" },
+   { "name": "Vàng", "hex": "#FFFF00" },
    { "name": "Cam", "hex": "#FFA500" },
    { "name": "Tím", "hex": "#800080" },
    { "name": "Hồng", "hex": "#FFC0CB" },
    { "name": "Nâu", "hex": "#A52A2A" },
    { "name": "Đen", "hex": "#000000", "textColor": "#FFFFFF" },
-   { "name": "Trắng", "hex": "#FFFFFF", "textColor": "#000000" }
+   { "name": "Trắng", "hex": "#FFFFFF" }
  ]
