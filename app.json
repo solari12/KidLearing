@@ -13,13 +13,21 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.LearningAppForKids",  // Thêm nếu chưa có
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Ứng dụng này cần quyền ghi âm để nhận diện giọng nói."  // Thêm mô tả quyền ghi âm trên iOS
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.LearningAppForKids",
+      "permissions": [
+        "ANDROID.PERMISSION.RECORD_AUDIO"  // Thêm quyền ghi âm cho Android
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
