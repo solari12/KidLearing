@@ -1,24 +1,42 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Dimensions } from 'react-native';
 import SignatureScreen from 'react-native-signature-canvas';
 
-export default function HandwritingGameScreen({ onBack }) {
+const { width } = Dimensions.get('window');
+
+export default function HandwritingGameScreen() {
   const [result, setResult] = useState('');
+  const [targetNumber, setTargetNumber] = useState(0);
   const signRef = useRef();
 
+  // Danh sách hình ảnh số 0–9
+  const numberImages = {
+    0: require('../assets/numbers/0.jpg'),
+    1: require('../assets/numbers/1.png'),
+    2: require('../assets/numbers/2.jpg'),
+    3: require('../assets/numbers/3.png'),
+    4: require('../assets/numbers/4.jpg'),
+    5: require('../assets/numbers/5.jpg'),
+    6: require('../assets/numbers/6.jpg'),
+    7: require('../assets/numbers/7.jpg'),
+    8: require('../assets/numbers/8.jpg'),
+    9: require('../assets/numbers/9.jpg'),
+  };
+
   const handleOK = async (signature) => {
-    // Kiểm tra và gửi hình ảnh chữ ký  
-    if (signature) {
-      setResult('→ Đang xử lý...');
-      await recognizeCharacter(signature);
-    } else {
-      setResult('❌ Không có cơ sở dữ liệu để gửi');
+    if (!signature) {
+      setResult('❌ Bé hãy viết số trước khi gửi nhé!');
+      return;
     }
+    setResult('→ Đang xử lý...');
+    // Loại bỏ tiền tố base64
+    const cleanSignature = signature.replace('data:image/png;base64,', '');
+    await recognizeCharacter(cleanSignature);
   };
 
   const recognizeCharacter = async (base64Image) => {
     try {
-      const response = await fetch('http://192.168.1.16:5000/recognize', {
+      const response = await fetch('http://192.168.1.9:5000/recognize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,13 +47,17 @@ export default function HandwritingGameScreen({ onBack }) {
       const data = await response.json();
 
       if (response.ok) {
-        setResult(`Bạn vừa viết: ${data.character}`);  // Sửa từ data.character → data.number
+        if (data.number == targetNumber) {
+          setResult(`✅ Giỏi lắm! Bé đã viết đúng số ${targetNumber}`);
+        } else {
+          setResult(`❌ Bé viết số ${data.number}, hãy thử viết số ${targetNumber} nhé!`);
+        }
       } else {
         setResult('❌ Lỗi xử lý: ' + data.error);
       }
     } catch (err) {
       console.error('Lỗi gửi ảnh:', err);
-      setResult('❌ Không gửi được ảnh tới API');
+      setResult('❌ Không gửi được ảnh, kiểm tra kết nối!');
     }
   };
 
@@ -44,24 +66,44 @@ export default function HandwritingGameScreen({ onBack }) {
     setResult('');
   };
 
+  const handleNextNumber = () => {
+    const next = (targetNumber + 1) % 10;
+    setTargetNumber(next);
+    handleClear();
+  };
+
   return (
-    <View style={[styles.screen, { flex: 1 }]}>
-      <SignatureScreen
-        ref={signRef}
-        onOK={handleOK}  // Gọi handleOK trực tiếp  
-        clearText="Xoá"
-        confirmText="Gửi"
-        descriptionText="Viết một chữ cái"
-        autoClear={false}
-        style={{ flex: 1, height: 1000 }}
-        backgroundColor="white" // Đặt màu nền đúng  
-        penColor="black"       // Đặt màu bút vẽ  
-      />
-
-      <TouchableOpacity style={styles.resetButton} onPress={handleClear}>
-        <Text style={styles.resetButtonText}>Xoá nét vẽ</Text>
-      </TouchableOpacity>
-
+    <View style={styles.screen}>
+      <Text style={styles.instructionText}>Viết số {targetNumber} theo mẫu dưới đây:</Text>
+      <View style={styles.imageContainer}>
+        <Image
+          source={numberImages[targetNumber]}
+          style={styles.numberImage}
+          resizeMode="contain"
+        />
+      </View>
+      <View style={styles.canvasWrapper}>
+        <SignatureScreen
+          ref={signRef}
+          onOK={handleOK}
+          clearText="Xoá"
+          confirmText="Gửi"
+          descriptionText="Vẽ số vào đây"
+          autoClear={false}
+          style={styles.signatureCanvas}
+          backgroundColor="#fff"
+          penColor="black"
+          webStyle={`
+            .m-signature-pad { border: 2px dashed #ccc; border-radius: 8px; }
+            .m-signature-pad--body { background: #fff; }
+          `}
+        />
+      </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.nextButton} onPress={handleNextNumber}>
+          <Text style={styles.buttonText}>➡️ Tiếp theo</Text>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.progressText}>{result}</Text>
     </View>
   );
@@ -70,42 +112,64 @@ export default function HandwritingGameScreen({ onBack }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: 32,
-    paddingBottom: 32,
+    padding: 20,
+    backgroundColor: '#f5f5f5',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-  },
-  backButton: {
-    marginRight: 12,
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: '#007AFF',
-  },
-  screenTitle: {
-    fontSize: 24,
+  instructionText: {
+    fontSize: 22,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
     color: '#333',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  numberImage: {
+    width: width * 0.4,
+    height: width * 0.4,
+  },
+  canvasWrapper: {
+    flex: 1,
+    borderWidth: 2,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  signatureCanvas: {
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
   resetButton: {
     backgroundColor: '#FFB6C1',
-    margin: 20,
+    flex: 1,
+    marginRight: 5,
     padding: 12,
     borderRadius: 12,
     alignItems: 'center',
   },
-  resetButtonText: {
+  nextButton: {
+    backgroundColor: '#87CEFA',
+    flex: 1,
+    marginLeft: 5,
+    padding: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   progressText: {
     fontSize: 18,
     textAlign: 'center',
-    marginTop: 12,
+    marginTop: 15,
     color: '#333',
   },
-});  
+});
