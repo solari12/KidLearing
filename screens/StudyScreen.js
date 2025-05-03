@@ -16,7 +16,7 @@ export default function VoiceAssistant() {
     setLoading(true);
     const result = await callGeminiAPI(inputText.trim());
     setResponseText(result);
-    speak(result);
+    // speak(result);
     setLoading(false);
   };
 
@@ -44,9 +44,9 @@ export default function VoiceAssistant() {
 
   const speak = (text) => {
     Speech.speak(text, {
-      language: 'vi-VN',
+      language: 'ja-JP',
       pitch: 1.2,      // Cao hơn giọng bình thường
-      rate: 0.95       // Chậm nhẹ
+      rate: 0.92    // Chậm nhẹ
     });
   };
 
